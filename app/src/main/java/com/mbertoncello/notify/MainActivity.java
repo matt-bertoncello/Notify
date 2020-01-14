@@ -31,12 +31,27 @@ public class MainActivity extends AppCompatActivity {
 
         Button button = (Button) findViewById(R.id.button);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToSecondActivity();
-            }
-        });
+        // If the user is authenticated, the button redirects to user page.
+        if (true){
+            button.setText("User");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToUserActivity();
+                }
+            });
+        }
+
+        // If the user is not authenticated, the button redirects to login page.
+        else {
+            button.setText("Login");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToLoginActivity();
+                }
+            });
+        }
 
         // Get token
         // [START retrieve_current_token]
@@ -62,10 +77,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-    Redirect to the second activity.
+    Redirect to the login activity.
      */
-    private void goToSecondActivity() {
-        Intent intent = new Intent(this, SecondActivity.class);
+    private void goToLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    /*
+    Redirect to the user activity.
+     */
+    private void goToUserActivity() {
+        Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
     }
 }

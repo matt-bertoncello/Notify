@@ -74,7 +74,7 @@ public class NotificationReceived extends FirebaseMessagingService {
     private void scheduleJob() {
         // [START dispatch_job]
         OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(MyWorker.class).build();
-        WorkManager.getInstance().beginWith(work).enqueue();
+        WorkManager.getInstance(this).beginWith(work).enqueue();
         // [END dispatch_job]
     }
 
