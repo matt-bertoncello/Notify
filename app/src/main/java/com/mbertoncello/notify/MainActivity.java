@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.button);
 
         // If the user is authenticated, the button redirects to user page.
-        if (true){
+        if (((MyApplication) getApplicationContext()).isAuthenticated()){
             button.setText("User");
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
