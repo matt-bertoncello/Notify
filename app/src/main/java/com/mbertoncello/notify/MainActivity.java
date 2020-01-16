@@ -9,12 +9,13 @@ import android.view.View;
 import android.content.Intent;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import static com.mbertoncello.notify.MyApplication.FIREBASE_INSTANCE_ID_PREFERENCE_KEY;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,13 +65,11 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
 
-                        // Get new Instance ID token
+                        // Get Instance ID token
                         String token = task.getResult().getToken();
 
-                        // Log and toast
-                        String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        // save token to SharedPreferences
+                        ((MyApplication) getApplicationContext()).preferences.edit().putString(FIREBASE_INSTANCE_ID_PREFERENCE_KEY, token).commit();
                     }
                 });
         // [END retrieve_current_token]

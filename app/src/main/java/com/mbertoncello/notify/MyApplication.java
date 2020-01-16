@@ -16,12 +16,20 @@ public class MyApplication extends Application {
     // Keys for values in SharedPreference.
     public static String AUTH_TOKEN_PREFERENCE_KEY = "auth_token";
     public static String EMAIL_PREFERENCE_KEY = "email";
+    public static String FIREBASE_INSTANCE_ID_PREFERENCE_KEY = "firebase_instance_id";
+
+    public SharedPreferences preferences;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        this.preferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+    }
 
     /*
     Return true if auth_token is saved in SharedPreference. This indicates if the user has been authenticated.
      */
     public boolean isAuthenticated() {
-        SharedPreferences preferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         return preferences.contains(AUTH_TOKEN_PREFERENCE_KEY);
     }
 }

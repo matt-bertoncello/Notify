@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,19 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.Context.MODE_PRIVATE;
 import static com.mbertoncello.notify.MyApplication.AUTH_TOKEN_PREFERENCE_KEY;
-import static com.mbertoncello.notify.MyApplication.PREFERENCE_NAME;
-
+import static com.mbertoncello.notify.MyApplication.FIREBASE_INSTANCE_ID_PREFERENCE_KEY;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -81,11 +75,18 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void sendLoginToAPI(String email, String password) {
         // Call API to load current user details and display.
-        Map<String,String> params = new HashMap<String, String>();
-        params.put("Content-Type","application/x-www-form-urlencoded");
-        params.put("email", email);
-        params.put("password", password);
-        new NotifyGetRequest(this, "/login", params, new LoginAPICallback(this));
+        Map<String,String> headers = new HashMap<String, String>();
+        headers.put("Content-Type","application/x-www-form-urlencoded");
+        headers.put("email", email);
+        headers.put("password", password);
+
+        // Get firebase_instance_id to send with login details in body of API.
+        String firebase_instance_id = ((MyApplication) getApplicationContext()).preferences.getString(FIREBASE_INSTANCE_ID_PREFERENCE_KEY,"");
+
+        Map<String,String> body = new HashMap<String, String>();
+        headers.put("firebase_instance_id", firebase_instance_id);
+
+        new NotifyGetRequest(this, "/login", headers, body, new LoginAPICallback(this));
     }
 
     /*
@@ -108,8 +109,7 @@ Save auth_token to SharedPreferences storage and redirect to UserActivity.
                 Log.d(TAG, "auth_token: "+auth_token);
 
                 // Save the auth_token to device storage.
-                SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-                preferences.edit().putString(AUTH_TOKEN_PREFERENCE_KEY, auth_token).commit();
+                ((MyApplication) getApplicationContext()).preferences.edit().putString(AUTH_TOKEN_PREFERENCE_KEY, auth_token).commit();
 
                 // Redirect to User Activity.
                 Intent intent = new Intent(context, UserActivity.class);
