@@ -36,7 +36,7 @@ public class NotifyGetRequest {
     Can access the body of the response with @getJSONFromKey.
     params = list of headers in a Map.
      */
-    public NotifyGetRequest(Context context, String endpoint, Map headers, Map body, APICallback callback) {
+    public NotifyGetRequest(Context context, String endpoint, Map headers, APICallback callback) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = ROOT_URL+endpoint;
@@ -87,11 +87,6 @@ public class NotifyGetRequest {
                         }
                     }
                 }) {
-            @Override
-            protected Map<String,String> getParams(){
-                return body;
-            }
-
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return headers;

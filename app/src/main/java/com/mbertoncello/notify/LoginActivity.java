@@ -74,19 +74,17 @@ public class LoginActivity extends AppCompatActivity {
     Handle configuration of GET API, and allocate success and error functions.
      */
     private void sendLoginToAPI(String email, String password) {
+        // Get firebase_instance_id to send with login details in body of API.
+        String firebase_instance_id = ((MyApplication) getApplicationContext()).preferences.getString(FIREBASE_INSTANCE_ID_PREFERENCE_KEY,"");
+
         // Call API to load current user details and display.
         Map<String,String> headers = new HashMap<String, String>();
         headers.put("Content-Type","application/x-www-form-urlencoded");
         headers.put("email", email);
         headers.put("password", password);
-
-        // Get firebase_instance_id to send with login details in body of API.
-        String firebase_instance_id = ((MyApplication) getApplicationContext()).preferences.getString(FIREBASE_INSTANCE_ID_PREFERENCE_KEY,"");
-
-        Map<String,String> body = new HashMap<String, String>();
         headers.put("firebase_instance_id", firebase_instance_id);
 
-        new NotifyGetRequest(this, "/login", headers, body, new LoginAPICallback(this));
+        new NotifyGetRequest(this, "/login", headers, new LoginAPICallback(this));
     }
 
     /*

@@ -80,9 +80,7 @@ public class UserActivity extends AppCompatActivity {
         headers.put("Content-Type","application/x-www-form-urlencoded");
         headers.put("auth_token", auth_token);
 
-        Map<String,String> body = new HashMap<String, String>();
-
-        new NotifyGetRequest(this, "/user", headers, body, new UserAPICallback());
+        new NotifyGetRequest(this, "/user", headers, new UserAPICallback());
     }
 
     /*
