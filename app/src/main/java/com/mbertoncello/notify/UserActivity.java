@@ -2,6 +2,7 @@ package com.mbertoncello.notify;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.mbertoncello.notify.MyApplication.AUTH_TOKEN_PREFERENCE_KEY;
 import static com.mbertoncello.notify.MyApplication.EMAIL_PREFERENCE_KEY;
 import static com.mbertoncello.notify.MyApplication.PREFERENCE_NAME;
@@ -85,7 +87,7 @@ public class UserActivity extends AppCompatActivity {
         Map<String,String> params = new HashMap<String, String>();
         params.put("Content-Type","application/x-www-form-urlencoded");
         params.put("auth_token", auth_token);
-        new NotifyGetRequest(this, "/user", params, new UserAPICallback(emailText));
+        new NotifyGetRequest(this, "/user", params, new UserAPICallback(emailText, this));
     }
 }
 
@@ -95,14 +97,23 @@ Define callback functions for '/user' endpoint response.
 class UserAPICallback implements APICallback {
     private static String TAG = "UserAPICallback";
     private TextView emailText;
+    private Context context;
 
-    public UserAPICallback(TextView emailText) { this.emailText = emailText; }
+    public UserAPICallback(TextView emailText, Context context) {
+        this.emailText = emailText;
+        this.context = context;
+    }
 
     @Override
     public void onSuccess(JSONObject jsonObject) {
         try {
             String emailAPI = jsonObject.getString("email");
             this.emailText.setText(emailAPI);
+
+            // save email value to SharedPreference
+            SharedPreferences preferences = this.context.getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+            preferences.edit().putString(EMAIL_PREFERENCE_KEY, emailAPI).commit();
+
         } catch (JSONException e) {
             Log.d(TAG, "could not find 'email' in response.");
         }

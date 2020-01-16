@@ -15,6 +15,7 @@
         android:ems="10"
         android:hint="email/username"
         android:inputType="textEmailAddress"
+        android:textCursorDrawable="@color/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

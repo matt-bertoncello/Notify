@@ -1,9 +1,12 @@
 package com.mbertoncello.notify;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -15,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.util.Map;
 
 import static com.mbertoncello.notify.MyApplication.ROOT_URL;
@@ -57,15 +61,29 @@ public class NotifyGetRequest {
                     @Override
                     // Catch error and convert data to JSON.
                     public void onErrorResponse(VolleyError error) {
-                        try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
-                            Log.d(TAG, "error: "+responseBody);
-                            JSONObject jsonObject = new JSONObject(responseBody);
-                            callback.onError(error.networkResponse.statusCode, jsonObject);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
+                        // If connection error, toast error and return user to Main Activity
+                        if (error instanceof NoConnectionError) {
+                            String msg = context.getString(R.string.no_format, "No Connection Error: 102");
+                            Log.d(TAG, msg);
+                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(context, MainActivity.class);
+                            context.startActivity(intent);
+                        }
+
+                        // If it is another error, pass it through to the callback error function.
+                        else {
+                            try {
+                                Log.d(TAG, error.toString());
+                                String responseBody = new String(error.networkResponse.data, "utf-8");
+                                Log.d(TAG, "error: "+responseBody);
+                                JSONObject jsonObject = new JSONObject(responseBody);
+                                callback.onError(error.networkResponse.statusCode, jsonObject);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }) {
