@@ -80,17 +80,17 @@ public class LoginActivity extends AppCompatActivity {
         // Call API to load current user details and display.
         Map<String,String> headers = new HashMap<String, String>();
         headers.put("Content-Type","application/x-www-form-urlencoded");
-        headers.put("email", email);
-        headers.put("password", password);
-        headers.put("firebase_instance_id", firebase_instance_id);
+        headers.put("Email", email);
+        headers.put("Password", password);
+        headers.put("Firebase-Instance-Id", firebase_instance_id);
 
         new NotifyGetRequest(this, "/login", headers, new LoginAPICallback(this));
     }
 
     /*
-Define callback functions for '/login' endpoint response.
-Save auth_token to SharedPreferences storage and redirect to UserActivity.
- */
+    Define callback functions for '/login' endpoint response.
+    Save auth_token to SharedPreferences storage and redirect to UserActivity.
+     */
     class LoginAPICallback implements APICallback {
         private String TAG = "LoginAPICallback";
         private Context context;
@@ -102,7 +102,7 @@ Save auth_token to SharedPreferences storage and redirect to UserActivity.
         @Override
         public void onSuccess(JSONObject jsonObject) {
             try {
-                String auth_token = jsonObject.getString("auth_token");
+                String auth_token = jsonObject.getString("auth-token");
 
                 Log.d(TAG, "auth_token: "+auth_token);
 

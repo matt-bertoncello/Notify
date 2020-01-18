@@ -10,9 +10,9 @@
         android:pivotY="341">
 
         <path android:fillColor="#ffffff"
-            android:pathData="M142,404.5V290h61,61v114,134.207h-61,41z" />
+            android:pathData="M142,424.5V290h61,61v114,134h-61,41z" />
         <path android:fillColor="#ffffff"
-            android:pathData="M422,404.5V290h61,61v114,134.207h-61,41z" />
+            android:pathData="M422,424.5V290h61,61v114,134h-61,41z" />
         <path android:fillColor="#ffffff"
             android:pathData="m197,264 l-22,0 63,-58 63,-58h68,42 l 63,58 63,58 -25,0c-30,0 -311,0 -343,0z"/>
         <path android:fillColor="#ffffff"

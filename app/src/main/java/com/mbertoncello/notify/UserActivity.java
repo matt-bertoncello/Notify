@@ -2,12 +2,14 @@ package com.mbertoncello.notify;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +19,7 @@ import java.util.Map;
 
 import static com.mbertoncello.notify.MyApplication.AUTH_TOKEN_PREFERENCE_KEY;
 import static com.mbertoncello.notify.MyApplication.EMAIL_PREFERENCE_KEY;
+import static com.mbertoncello.notify.MyApplication.FIREBASE_INSTANCE_ID_PREFERENCE_KEY;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -54,12 +57,16 @@ public class UserActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Delete all values from SharedPreference.
-                ((MyApplication) getApplicationContext()).preferences.edit().clear().commit();
+                // tell API server this user has logged out.
+                String auth_token = ((MyApplication) getApplicationContext()).preferences.getString(AUTH_TOKEN_PREFERENCE_KEY,"");
+                String firebase_instance_id = ((MyApplication) getApplicationContext()).preferences.getString(FIREBASE_INSTANCE_ID_PREFERENCE_KEY,"");
 
-                // Go to MainActivity
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                Map<String,String> headers = new HashMap<String, String>();
+                headers.put("Content-Type","application/x-www-form-urlencoded");
+                headers.put("Auth-Token", auth_token);
+                headers.put("Firebase-Instance-Id", firebase_instance_id);
+
+                new NotifyGetRequest(getApplicationContext(), "/logout", headers, new LogoutAPICallback(getApplicationContext()));
             }
         });
     }
@@ -78,8 +85,7 @@ public class UserActivity extends AppCompatActivity {
         // Call API to load current user details and display.
         Map<String,String> headers = new HashMap<String, String>();
         headers.put("Content-Type","application/x-www-form-urlencoded");
-        headers.put("auth_token", auth_token);
-
+        headers.put("Auth-Token", auth_token);
         new NotifyGetRequest(this, "/user", headers, new UserAPICallback());
     }
 
@@ -108,6 +114,45 @@ public class UserActivity extends AppCompatActivity {
         @Override
         public void onError(Integer statusCode, JSONObject jsonObject) {
             Log.d(TAG, "error: "+jsonObject);
+        }
+    }
+
+    /*
+    Define callback functions for '/logout' endpoint response.
+    API server will remove the firebaseInstance from the user defined by auth_token.
+     */
+    class LogoutAPICallback implements APICallback {
+        private String TAG = "LogoutAPICallback";
+        private Context context;
+
+        public LogoutAPICallback(Context context) { this.context = context; }
+
+        @Override
+        public void onSuccess(JSONObject jsonObject) {
+            // Delete all values from SharedPreference.
+            ((MyApplication) getApplicationContext()).preferences.edit().clear().commit();
+
+            // Go to MainActivity
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
+
+        @Override
+        public void onError(Integer statusCode, JSONObject jsonObject) {
+            // Toast error.
+            if (statusCode == 401) {
+                try {
+                    String errorMessage = jsonObject.getString("message");
+                    String msg = context.getString(R.string.no_format, errorMessage);
+                    Log.d(TAG, msg);
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    Log.d(TAG, "error: "+jsonObject);
+                }
+            } else {
+                Log.d(TAG, "error: "+jsonObject);
+            }
         }
     }
 }
