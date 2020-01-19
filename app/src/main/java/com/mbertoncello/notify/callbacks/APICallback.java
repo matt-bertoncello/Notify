@@ -1,4 +1,4 @@
-package com.mbertoncello.notify;
+package com.mbertoncello.notify.callbacks;
 
 import com.android.volley.VolleyError;
 

@@ -2,8 +2,6 @@ package com.mbertoncello.notify;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,13 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.mbertoncello.notify.callbacks.LoginAPICallback;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.mbertoncello.notify.MyApplication.AUTH_TOKEN_PREFERENCE_KEY;
 import static com.mbertoncello.notify.MyApplication.FIREBASE_INSTANCE_ID_PREFERENCE_KEY;
 
 public class LoginActivity extends AppCompatActivity {
@@ -84,53 +80,6 @@ public class LoginActivity extends AppCompatActivity {
         headers.put("Password", password);
         headers.put("Firebase-Instance-Id", firebase_instance_id);
 
-        new NotifyGetRequest(this, "/login", headers, new LoginAPICallback(this));
-    }
-
-    /*
-    Define callback functions for '/login' endpoint response.
-    Save auth_token to SharedPreferences storage and redirect to UserActivity.
-     */
-    class LoginAPICallback implements APICallback {
-        private String TAG = "LoginAPICallback";
-        private Context context;
-
-        public LoginAPICallback(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public void onSuccess(JSONObject jsonObject) {
-            try {
-                String auth_token = jsonObject.getString("auth-token");
-
-                Log.d(TAG, "auth_token: "+auth_token);
-
-                // Save the auth_token to device storage.
-                ((MyApplication) getApplicationContext()).preferences.edit().putString(AUTH_TOKEN_PREFERENCE_KEY, auth_token).commit();
-
-                // Redirect to User Activity.
-                Intent intent = new Intent(context, UserActivity.class);
-                context.startActivity(intent);
-
-            } catch (JSONException e) {
-                Log.d(TAG, "could not find 'auth_token' in response");
-            }
-        }
-
-        @Override
-        public void onError(Integer statusCode, JSONObject jsonObject) {
-            if (statusCode == 401) {
-                try {
-                    String errorMessage = jsonObject.getString("message");
-                    errorField.setText(errorMessage);
-
-                } catch (JSONException e) {
-                    Log.d(TAG, "error: "+jsonObject);
-                }
-            } else {
-                Log.d(TAG, "error: "+jsonObject);
-            }
-        }
+        new NotifyGetRequest(this, "/login", headers, new LoginAPICallback(this, errorField));
     }
 }

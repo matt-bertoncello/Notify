@@ -15,6 +15,7 @@ public class MyApplication extends Application {
     public static String PREFERENCE_NAME = "com.mbertoncello.notify";
 
     // Keys for values in SharedPreference.
+    public static String DEVICE_NAME_PREFERENCE_KEY = "device_name";
     public static String AUTH_TOKEN_PREFERENCE_KEY = "auth_token";
     public static String EMAIL_PREFERENCE_KEY = "email";
     public static String FIREBASE_INSTANCE_ID_PREFERENCE_KEY = "firebase_instance_id";
@@ -32,5 +33,14 @@ public class MyApplication extends Application {
      */
     public boolean isAuthenticated() {
         return preferences.contains(AUTH_TOKEN_PREFERENCE_KEY);
+    }
+
+    /*
+    Remove appropriate shared preferences on logout.
+     */
+    public void removeCache() {
+        this.preferences.edit().remove(AUTH_TOKEN_PREFERENCE_KEY).apply();
+        this.preferences.edit().remove(EMAIL_PREFERENCE_KEY).apply();
+        this.preferences.edit().remove(FIREBASE_INSTANCE_ID_PREFERENCE_KEY).apply();
     }
 }

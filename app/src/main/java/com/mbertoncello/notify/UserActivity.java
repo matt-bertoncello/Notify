@@ -2,17 +2,15 @@ package com.mbertoncello.notify;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.mbertoncello.notify.callbacks.LogoutAPICallback;
+import com.mbertoncello.notify.callbacks.UserAPICallback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,74 +84,7 @@ public class UserActivity extends AppCompatActivity {
         Map<String,String> headers = new HashMap<String, String>();
         headers.put("Content-Type","application/x-www-form-urlencoded");
         headers.put("Auth-Token", auth_token);
-        new NotifyGetRequest(this, "/user", headers, new UserAPICallback());
-    }
-
-    /*
-    Define callback functions for '/user' endpoint response.
-     */
-    class UserAPICallback implements APICallback {
-        private String TAG = "UserAPICallback";
-
-        public UserAPICallback() {}
-
-        @Override
-        public void onSuccess(JSONObject jsonObject) {
-            try {
-                String emailAPI = jsonObject.getString("email");
-                emailText.setText(emailAPI);
-
-                // save email value to SharedPreference
-                ((MyApplication) getApplicationContext()).preferences.edit().putString(EMAIL_PREFERENCE_KEY, emailAPI).commit();
-
-            } catch (JSONException e) {
-                Log.d(TAG, "could not find 'email' in response.");
-            }
-        }
-
-        @Override
-        public void onError(Integer statusCode, JSONObject jsonObject) {
-            Log.d(TAG, "error: "+jsonObject);
-        }
-    }
-
-    /*
-    Define callback functions for '/logout' endpoint response.
-    API server will remove the firebaseInstance from the user defined by auth_token.
-     */
-    class LogoutAPICallback implements APICallback {
-        private String TAG = "LogoutAPICallback";
-        private Context context;
-
-        public LogoutAPICallback(Context context) { this.context = context; }
-
-        @Override
-        public void onSuccess(JSONObject jsonObject) {
-            // Delete all values from SharedPreference.
-            ((MyApplication) getApplicationContext()).preferences.edit().clear().commit();
-
-            // Go to MainActivity
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        }
-
-        @Override
-        public void onError(Integer statusCode, JSONObject jsonObject) {
-            // Toast error.
-            if (statusCode == 401) {
-                try {
-                    String errorMessage = jsonObject.getString("message");
-                    String msg = context.getString(R.string.no_format, errorMessage);
-                    Log.d(TAG, msg);
-                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-
-                } catch (JSONException e) {
-                    Log.d(TAG, "error: "+jsonObject);
-                }
-            } else {
-                Log.d(TAG, "error: "+jsonObject);
-            }
-        }
+        new NotifyGetRequest(this, "/user", headers, new UserAPICallback(this, this.emailText));
     }
 }
 
