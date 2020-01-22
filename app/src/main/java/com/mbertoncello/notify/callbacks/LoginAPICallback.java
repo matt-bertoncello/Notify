@@ -48,7 +48,7 @@ public class LoginAPICallback implements APICallback {
 
     @Override
     public void onError(Integer statusCode, JSONObject jsonObject) {
-        if (statusCode == 401) {
+        if (statusCode == 401 || statusCode == 500) {
             try {
                 String errorMessage = jsonObject.getString("message");
                 errorField.setText(errorMessage);
