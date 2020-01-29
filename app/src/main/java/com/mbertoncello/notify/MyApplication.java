@@ -8,8 +8,8 @@ public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
 
     // Root Url for API calls.
-    //public static String ROOT_URL = "https://not1fy-staging.herokuapp.com/api/v1";
-    public static String ROOT_URL = "http://192.168.0.97:5001/api/v1";
+    public static String ROOT_URL = "https://not1fy-staging.herokuapp.com/api/v1";
+    //public static String ROOT_URL = "http://192.168.0.130:5001/api/v1";
 
     // Name of Private SharedPreference saved to device.
     public static String PREFERENCE_NAME = "com.mbertoncello.notify";
@@ -19,6 +19,7 @@ public class MyApplication extends Application {
     public static String AUTH_TOKEN_PREFERENCE_KEY = "auth_token";
     public static String EMAIL_PREFERENCE_KEY = "email";
     public static String FIREBASE_INSTANCE_ID_PREFERENCE_KEY = "firebase_instance_id";
+    public static String SECRET_PREFERENCE_KEY = "secret";
 
     public SharedPreferences preferences;
 
@@ -42,5 +43,6 @@ public class MyApplication extends Application {
         this.preferences.edit().remove(AUTH_TOKEN_PREFERENCE_KEY).apply();
         this.preferences.edit().remove(EMAIL_PREFERENCE_KEY).apply();
         this.preferences.edit().remove(FIREBASE_INSTANCE_ID_PREFERENCE_KEY).apply();
+        this.preferences.edit().remove(SECRET_PREFERENCE_KEY).apply();
     }
 }

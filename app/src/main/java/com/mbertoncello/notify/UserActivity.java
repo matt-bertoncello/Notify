@@ -3,10 +3,7 @@ package com.mbertoncello.notify;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mbertoncello.notify.apiRequests.NotifyGetRequest;
+import com.mbertoncello.notify.apiRequests.NotifyPostRequest;
+import com.mbertoncello.notify.callbacks.DeviceAPICallback;
 import com.mbertoncello.notify.callbacks.LogoutAPICallback;
 import com.mbertoncello.notify.callbacks.UserAPICallback;
 
@@ -67,14 +67,15 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // tell API server this user has logged out.
                 String auth_token = ((MyApplication) getApplicationContext()).preferences.getString(AUTH_TOKEN_PREFERENCE_KEY,"");
-                String firebase_instance_id = ((MyApplication) getApplicationContext()).preferences.getString(FIREBASE_INSTANCE_ID_PREFERENCE_KEY,"");
+
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("test", "test body");
 
                 Map<String,String> headers = new HashMap<String, String>();
                 headers.put("Content-Type","application/x-www-form-urlencoded");
                 headers.put("Auth-Token", auth_token);
-                headers.put("Firebase-Instance-Id", firebase_instance_id);
 
-                new NotifyGetRequest(getApplicationContext(), "/logout", headers, new LogoutAPICallback(getApplicationContext()));
+                new NotifyPostRequest(getApplicationContext(), "/logout", headers, params, new LogoutAPICallback(getApplicationContext()));
             }
         });
     }
@@ -114,8 +115,18 @@ public class UserActivity extends AppCompatActivity {
                                     event.getAction() == KeyEvent.ACTION_DOWN &&
                                     event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                         if (event == null || !event.isShiftPressed()) {
-                            // the user is done typing.
-                            Log.d(TAG, v.getText().toString());
+                            // the user is done typing. Send post request to update device-name in server.
+                            Log.d(TAG, "Updating device-name to: "+v.getText().toString());
+
+                            Map<String,String> params = new HashMap<String, String>();;
+                            params.put("Device-Name", v.getText().toString());
+
+                            Map<String,String> headers = new HashMap<String, String>();
+                            String auth_token = ((MyApplication) getApplicationContext()).preferences.getString(AUTH_TOKEN_PREFERENCE_KEY,"");
+                            headers.put("Auth-Token", auth_token);
+
+                            new NotifyPostRequest(getApplicationContext(), "/device", headers, params, new DeviceAPICallback(getApplicationContext(), deviceName, v.getText().toString()));
+
                             return false; // pass on to other listeners (as opposed to consuming).
                         }
                     }

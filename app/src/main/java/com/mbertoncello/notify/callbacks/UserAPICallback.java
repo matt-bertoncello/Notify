@@ -30,6 +30,7 @@ public class UserAPICallback implements APICallback {
 
     @Override
     public void onSuccess(JSONObject jsonObject) {
+        Log.d(TAG, jsonObject.toString());
         try {
             String emailAPI = jsonObject.getString("email");
             emailText.setText(emailAPI);

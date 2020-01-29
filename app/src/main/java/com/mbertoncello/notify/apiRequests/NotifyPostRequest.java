@@ -1,4 +1,4 @@
-package com.mbertoncello.notify;
+package com.mbertoncello.notify.apiRequests;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mbertoncello.notify.MainActivity;
+import com.mbertoncello.notify.R;
 import com.mbertoncello.notify.callbacks.APICallback;
 
 import org.json.JSONException;
@@ -26,23 +28,22 @@ import static com.mbertoncello.notify.MyApplication.ROOT_URL;
 /*
 Object to handle the API Get Request to an endpoint hosted at the ROOT_URL.
  */
-public class NotifyGetRequest {
+public class NotifyPostRequest {
 
-    private static final String TAG = "NotifyGetRequest";
-    private JSONObject jsonObject;
+    private static final String TAG = "NotifyPostRequest";
 
     /*
     Call the endpoint from ROOT_URL.
     Can access the body of the response with @getJSONFromKey.
     params = list of headers in a Map.
      */
-    public NotifyGetRequest(Context context, String endpoint, Map headers, APICallback callback) {
+    public NotifyPostRequest(Context context, String endpoint, Map headers, Map params, APICallback callback) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = ROOT_URL+endpoint;
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -68,6 +69,7 @@ public class NotifyGetRequest {
                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(context, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             context.startActivity(intent);
                         }
 
@@ -88,7 +90,13 @@ public class NotifyGetRequest {
                     }
                 }) {
             @Override
+            protected Map<String, String> getParams() {
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
+                params.put("Content-Type","application/x-www-form-urlencoded");
                 return headers;
             }
         };
@@ -96,13 +104,4 @@ public class NotifyGetRequest {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
-
-    /*
-    Called when API returns successful.
-    Convert body response into JSON.
-     */
-    private void jsonify(String response, APICallback callback){
-
-    }
-
 }

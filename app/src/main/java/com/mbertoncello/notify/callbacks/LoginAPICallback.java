@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.mbertoncello.notify.MyApplication.AUTH_TOKEN_PREFERENCE_KEY;
+import static com.mbertoncello.notify.MyApplication.SECRET_PREFERENCE_KEY;
 
 /*
     Define callback functions for '/login' endpoint response.
@@ -31,11 +32,13 @@ public class LoginAPICallback implements APICallback {
     public void onSuccess(JSONObject jsonObject) {
         try {
             String auth_token = jsonObject.getString("auth-token");
+            String secret = jsonObject.getString("secret");
 
             Log.d(TAG, "auth_token: "+auth_token);
 
-            // Save the auth_token to device storage.
+            // Save the auth_token and secret to device storage.
             ((MyApplication) context.getApplicationContext()).preferences.edit().putString(AUTH_TOKEN_PREFERENCE_KEY, auth_token).commit();
+            ((MyApplication) context.getApplicationContext()).preferences.edit().putString(SECRET_PREFERENCE_KEY, secret).commit();
 
             // Redirect to User Activity.
             Intent intent = new Intent(context, UserActivity.class);
