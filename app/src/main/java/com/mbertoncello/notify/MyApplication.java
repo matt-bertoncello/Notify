@@ -8,8 +8,9 @@ public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
 
     // Root Url for API calls.
-    public static String ROOT_URL = "https://not1fy-staging.herokuapp.com/api/v1";
-    //public static String ROOT_URL = "http://192.168.0.130:5001/api/v1";
+    //public static String ROOT_URL = "https://not1fy-staging.herokuapp.com/api/v1";
+    //public static String ROOT_URL = "http://192.168.0.240:5001/api/client-v1";
+    public static String ROOT_URL = "https://not1fy.herokuapp.com/api/client-v1";
 
     // Name of Private SharedPreference saved to device.
     public static String PREFERENCE_NAME = "com.mbertoncello.notify";

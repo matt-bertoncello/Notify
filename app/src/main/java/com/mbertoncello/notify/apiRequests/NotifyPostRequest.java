@@ -10,6 +10,7 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -70,6 +71,13 @@ public class NotifyPostRequest {
 
                             Intent intent = new Intent(context, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            context.startActivity(intent);
+                        } else if (error instanceof TimeoutError) {
+                            String msg = context.getString(R.string.no_format, "Timeout Error: 103");
+                            Log.d(TAG, msg);
+                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(context, MainActivity.class);
                             context.startActivity(intent);
                         }
 
