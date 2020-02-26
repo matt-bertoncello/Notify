@@ -5,10 +5,9 @@ import android.util.Log;
 import android.widget.EditText;
 
 import com.mbertoncello.notify.MyApplication;
+import com.mbertoncello.notify.R;
 
 import org.json.JSONObject;
-
-import static com.mbertoncello.notify.MyApplication.DEVICE_NAME_PREFERENCE_KEY;
 
 public class DeviceAPICallback implements APICallback {
     private String TAG = "DeviceAPICallback";
@@ -25,7 +24,10 @@ public class DeviceAPICallback implements APICallback {
     @Override
     public void onSuccess(JSONObject jsonObject) {
         Log.d(TAG, jsonObject.toString());
-        ((MyApplication) context.getApplicationContext()).preferences.edit().putString(DEVICE_NAME_PREFERENCE_KEY, this.deviceName).commit();
+        ((MyApplication) context.getApplicationContext()).preferences
+                .edit()
+                .putString(context.getString(R.string.device_name_preference_key), this.deviceName)
+                .commit();
         this.editText.setHint(this.deviceName);
         this.editText.setText("");
     }

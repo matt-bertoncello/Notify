@@ -21,11 +21,6 @@ import com.mbertoncello.notify.callbacks.UserAPICallback;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.mbertoncello.notify.MyApplication.AUTH_TOKEN_PREFERENCE_KEY;
-import static com.mbertoncello.notify.MyApplication.DEVICE_NAME_PREFERENCE_KEY;
-import static com.mbertoncello.notify.MyApplication.EMAIL_PREFERENCE_KEY;
-import static com.mbertoncello.notify.MyApplication.FIREBASE_INSTANCE_ID_PREFERENCE_KEY;
-
 public class UserActivity extends AppCompatActivity {
 
     private static final String TAG = "UserActivity";
@@ -37,7 +32,7 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // If there is no Auth Token saved, redirect to login screen.
-        if (!((MyApplication) getApplicationContext()).preferences.contains(AUTH_TOKEN_PREFERENCE_KEY)) {
+        if (!((MyApplication) getApplicationContext()).preferences.contains(getString(R.string.auth_token_preference_key))) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
@@ -66,7 +61,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // tell API server this user has logged out.
-                String auth_token = ((MyApplication) getApplicationContext()).preferences.getString(AUTH_TOKEN_PREFERENCE_KEY,"");
+                String auth_token = ((MyApplication) getApplicationContext()).preferences.getString(getString(R.string.auth_token_preference_key),"");
 
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("test", "test body");
@@ -84,15 +79,15 @@ public class UserActivity extends AppCompatActivity {
     Display the cached user details in the layout and update details from API.
      */
     private void displayUserDetails() {
-        String auth_token = ((MyApplication) getApplicationContext()).preferences.getString(AUTH_TOKEN_PREFERENCE_KEY,"");
+        String auth_token = ((MyApplication) getApplicationContext()).preferences.getString(getString(R.string.auth_token_preference_key),"");
         Log.d(TAG, "auth_token: "+auth_token);
 
         // Load cached email and display.
-        String emailCached = ((MyApplication) getApplicationContext()).preferences.getString(EMAIL_PREFERENCE_KEY,"Loading email...");
+        String emailCached = ((MyApplication) getApplicationContext()).preferences.getString(getString(R.string.email_preference_key),"Loading email...");
         this.emailText.setText(emailCached);
 
         // Load cached device name and display.
-        String deviceNameCached = ((MyApplication) getApplicationContext()).preferences.getString(DEVICE_NAME_PREFERENCE_KEY,"no device name");
+        String deviceNameCached = ((MyApplication) getApplicationContext()).preferences.getString(getString(R.string.device_name_preference_key),"no device name");
         this.deviceName.setHint(deviceNameCached);
 
         // Call API to load current user details and display.
@@ -122,7 +117,7 @@ public class UserActivity extends AppCompatActivity {
                             params.put("Device-Name", v.getText().toString());
 
                             Map<String,String> headers = new HashMap<String, String>();
-                            String auth_token = ((MyApplication) getApplicationContext()).preferences.getString(AUTH_TOKEN_PREFERENCE_KEY,"");
+                            String auth_token = ((MyApplication) getApplicationContext()).preferences.getString(getString(R.string.auth_token_preference_key),"");
                             headers.put("Auth-Token", auth_token);
 
                             new NotifyPostRequest(getApplicationContext(), "/device", headers, params, new DeviceAPICallback(getApplicationContext(), deviceName, v.getText().toString()));

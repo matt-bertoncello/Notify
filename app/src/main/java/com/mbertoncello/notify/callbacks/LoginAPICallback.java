@@ -6,13 +6,11 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.mbertoncello.notify.MyApplication;
+import com.mbertoncello.notify.R;
 import com.mbertoncello.notify.UserActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.mbertoncello.notify.MyApplication.AUTH_TOKEN_PREFERENCE_KEY;
-import static com.mbertoncello.notify.MyApplication.SECRET_PREFERENCE_KEY;
 
 /*
     Define callback functions for '/login' endpoint response.
@@ -37,8 +35,15 @@ public class LoginAPICallback implements APICallback {
             Log.d(TAG, "auth_token: "+auth_token);
 
             // Save the auth_token and secret to device storage.
-            ((MyApplication) context.getApplicationContext()).preferences.edit().putString(AUTH_TOKEN_PREFERENCE_KEY, auth_token).commit();
-            ((MyApplication) context.getApplicationContext()).preferences.edit().putString(SECRET_PREFERENCE_KEY, secret).commit();
+            ((MyApplication) context.getApplicationContext()).preferences
+                    .edit()
+                    .putString(context.getString(R.string.auth_token_preference_key), auth_token)
+                    .commit();
+
+            ((MyApplication) context.getApplicationContext()).preferences
+                    .edit()
+                    .putString(context.getString(R.string.secret_preference_key), secret)
+                    .commit();
 
             // Redirect to User Activity.
             Intent intent = new Intent(context, UserActivity.class);

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Notify</string>
-
+    <string name="root_endpoint">https://not1fy.herokuapp.com/api/client-v1</string>
     <string name="hello_world">Notify Client</string>
     <string name="next_page_button">Login Page</string>
 
@@ -12,10 +12,17 @@
     <string name="no_format">%s</string>
     <string name="fcm_message">fcm_message</string>
 
-    <!-- Channel information -->
+    <!-- Notification Channel information -->
     <string name="default_channel_name">Default Notifications</string>
     <string name="default_channel_id">DEFAULT</string>
     <string name="default_channel_description">Default Notifications</string>
 
+    <!-- SharedPreference keys and values -->
+    <string name="shared_preference_name">com.mbertoncello.notify</string>
+    <string name="device_name_preference_key">device_name</string>
+    <string name="auth_token_preference_key">auth_token</string>
+    <string name="email_preference_key">email</string>
+    <string name="firebase_instance_preference_key">firebase_instance_id</string>
+    <string name="secret_preference_key">secret</string>
 
 </resources>

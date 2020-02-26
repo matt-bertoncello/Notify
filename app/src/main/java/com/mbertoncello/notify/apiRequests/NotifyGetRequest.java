@@ -24,7 +24,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-import static com.mbertoncello.notify.MyApplication.ROOT_URL;
 
 /*
 Object to handle the API Get Request to an endpoint hosted at the ROOT_URL.
@@ -41,7 +40,7 @@ public class NotifyGetRequest {
     public NotifyGetRequest(Context context, String endpoint, Map headers, APICallback callback) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = ROOT_URL + endpoint;
+        String url = context.getString(R.string.root_endpoint) + endpoint;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

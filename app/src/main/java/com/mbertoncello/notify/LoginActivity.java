@@ -15,9 +15,6 @@ import com.mbertoncello.notify.callbacks.LoginAPICallback;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.mbertoncello.notify.MyApplication.DEVICE_NAME_PREFERENCE_KEY;
-import static com.mbertoncello.notify.MyApplication.FIREBASE_INSTANCE_ID_PREFERENCE_KEY;
-
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
@@ -73,8 +70,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void sendLoginToAPI(String email, String password) {
         // Get firebase_instance_id and device_name to send with login details in body of API.
-        String firebase_instance_id = ((MyApplication) getApplicationContext()).preferences.getString(FIREBASE_INSTANCE_ID_PREFERENCE_KEY,"");
-        String device_name = ((MyApplication) getApplicationContext()).preferences.getString(DEVICE_NAME_PREFERENCE_KEY,"");
+        String firebase_instance_id = ((MyApplication) getApplicationContext()).preferences.getString(getString(R.string.firebase_instance_preference_key),"");
+        String device_name = ((MyApplication) getApplicationContext()).preferences.getString(getString(R.string.device_name_preference_key),"");
 
         // Call API to load current user details and display.
         Map<String,String> headers = new HashMap<String, String>();

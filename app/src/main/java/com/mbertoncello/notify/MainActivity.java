@@ -15,8 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import static com.mbertoncello.notify.MyApplication.FIREBASE_INSTANCE_ID_PREFERENCE_KEY;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -69,7 +67,10 @@ public class MainActivity extends AppCompatActivity {
                         String token = task.getResult().getToken();
 
                         // save token to SharedPreferences
-                        ((MyApplication) getApplicationContext()).preferences.edit().putString(FIREBASE_INSTANCE_ID_PREFERENCE_KEY, token).commit();
+                        ((MyApplication) getApplicationContext()).preferences
+                                .edit()
+                                .putString(getString(R.string.firebase_instance_preference_key), token)
+                                .commit();
                     }
                 });
         // [END retrieve_current_token]
