@@ -10,6 +10,12 @@
     <!-- For notifications -->
     <string name="msg_token_fmt">InstanceID Token: %s</string>
     <string name="no_format">%s</string>
-    <string name="default_notification_channel_id">default_notification_channel_id</string>
     <string name="fcm_message">fcm_message</string>
+
+    <!-- Channel information -->
+    <string name="default_channel_name">Default Notifications</string>
+    <string name="default_channel_id">DEFAULT</string>
+    <string name="default_channel_description">Default Notifications</string>
+
+
 </resources>

@@ -1,7 +1,10 @@
 package com.mbertoncello.notify;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.SharedPreferences;
+import android.os.Build;
 
 public class MyApplication extends Application {
 
@@ -28,6 +31,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         this.preferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+
+        this.createNotificationChannel();
     }
 
     /*
@@ -45,5 +50,22 @@ public class MyApplication extends Application {
         this.preferences.edit().remove(EMAIL_PREFERENCE_KEY).apply();
         this.preferences.edit().remove(FIREBASE_INSTANCE_ID_PREFERENCE_KEY).apply();
         this.preferences.edit().remove(SECRET_PREFERENCE_KEY).apply();
+    }
+
+    // Create notification channel (category).If the channel is aready created, this does nothing.
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.default_channel_name);
+            String description = getString(R.string.default_channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("DEFAULT", name, NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
