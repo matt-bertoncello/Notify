@@ -56,18 +56,18 @@
             android:pathData="M 0,38 L 31,38 31,100 26,100 0,69 z" />
     </group>
 
-    <!-- Y -->
+    <!-- F -->
     <group
         android:translateX="410"
-        android:translateY="131">
+        android:translateY="100">
         <path android:fillColor="#000000"
-            android:pathData="M 0,0 L 31,0 31,100 26,100 0,69 z" />
+            android:pathData="M 0,31 L 31,31 31,69 31,169 0,138 z" />
         <path android:fillColor="#000000"
-            android:pathData="M 0,-7 L 31,-7 31,-100 0,-69 z" />
+            android:pathData="M 0,24 L 31,24 31,-69 0,-38 z" />
         <path android:fillColor="#000000"
-            android:pathData="M 38,-100 L 69,-100 100,-69, 38,-69 z" />
+            android:pathData="M 38,-69 L 69,-69 100,-38, 38,-38 z" />
         <path android:fillColor="#000000"
-            android:pathData="M 38,-38 L 65,-38 65,-7 38,-7 z" />
+            android:pathData="M 38,-7 L 65,-7 65,24 38,24 z" />
     </group>
 
     <!-- Y -->
@@ -79,9 +79,11 @@
         <path android:fillColor="#000000"
             android:pathData="M 69,38 L 100,38 67,90 53,61 z" />
         <path android:fillColor="#000000"
-            android:pathData="M 34,107 L 65,107 65,149 34,180 z" />
+            android:pathData="M 34,107 L 65,107 65,138 34,169 z" />
         <path android:fillColor="#000000"
-            android:pathData="M -490,149 L 27,149 27,180 -490,180  z" />
+            android:pathData="M -32,138 L 27,138 27,169 -32,169  z" />
+        <path android:fillColor="#000000"
+            android:pathData="M -490,138 L -80,138 -49,169 -490,169  z" />
     </group>
 
 </vector>
