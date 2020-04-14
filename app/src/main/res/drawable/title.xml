@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="300dp"
-    android:width="650dp"
-    android:viewportHeight="300"
-    android:viewportWidth="650">
+    android:height="210dp"
+    android:width="580dp"
+    android:viewportHeight="210"
+    android:viewportWidth="580">
 
     <!-- N -->
     <group
         android:translateX="0"
-        android:translateY="100">
+        android:translateY="69">
         <path android:fillColor="#000000"
             android:pathData="M 0,0 L 31,0 0,31 z" />
         <path android:fillColor="#000000"
@@ -23,7 +23,7 @@
     <!-- O -->
     <group
         android:translateX="130"
-        android:translateY="100">
+        android:translateY="69">
         <path android:fillColor="#000000"
             android:pathData="M 31,0 L 63,0 64,31 0,31 z" />
         <path android:fillColor="#000000"
@@ -37,7 +37,7 @@
     <!-- T -->
     <group
         android:translateX="260"
-        android:translateY="100">
+        android:translateY="69">
         <path android:fillColor="#000000"
             android:pathData="M 0,-10 L 31,-10 31,0 0,31 z" />
         <path android:fillColor="#000000"
@@ -49,7 +49,7 @@
     <!-- I -->
     <group
         android:translateX="350"
-        android:translateY="100">
+        android:translateY="69">
         <path android:fillColor="#000000"
             android:pathData="M 0,0 L 31,0 31,31 0,31 z" />
         <path android:fillColor="#000000"
@@ -59,9 +59,9 @@
     <!-- F -->
     <group
         android:translateX="410"
-        android:translateY="100">
+        android:translateY="69">
         <path android:fillColor="#000000"
-            android:pathData="M 0,31 L 31,31 31,69 31,169 0,138 z" />
+            android:pathData="M 0,31 L 31,31 31,69 31,141 0,110 z" />
         <path android:fillColor="#000000"
             android:pathData="M 0,24 L 31,24 31,-69 0,-38 z" />
         <path android:fillColor="#000000"
@@ -73,17 +73,17 @@
     <!-- Y -->
     <group
         android:translateX="480"
-        android:translateY="100">
+        android:translateY="69">
         <path android:fillColor="#000000"
-            android:pathData="M 0,38 L 31,38 65,100 34,100 z" />
+            android:pathData="M 0,0 L 31,0 65,72 34,72 z" />
         <path android:fillColor="#000000"
-            android:pathData="M 69,38 L 100,38 67,90 53,61 z" />
+            android:pathData="M 69,0 L 100,0 64,52 51,23 z" />
         <path android:fillColor="#000000"
-            android:pathData="M 34,107 L 65,107 65,138 34,169 z" />
+            android:pathData="M 34,79 L 65,79 65,110 34,141 z" />
         <path android:fillColor="#000000"
-            android:pathData="M -32,138 L 27,138 27,169 -32,169  z" />
+            android:pathData="M -32,110 L 27,110 27,141 -32,141  z" />
         <path android:fillColor="#000000"
-            android:pathData="M -490,138 L -80,138 -49,169 -490,169  z" />
+            android:pathData="M -490,110 L -80,110 -49,141 -490,141  z" />
     </group>
 
 </vector>
